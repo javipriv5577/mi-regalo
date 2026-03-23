@@ -8,38 +8,37 @@
 <style>
 body{
     margin:0;
-    height:100vh;
+    min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, rgba(255, 235, 59, 0.6), rgba(255, 213, 79, 0.6));    overflow:hidden;
+    background: linear-gradient(135deg, rgba(255, 235, 59, 0.6), rgba(255, 213, 79, 0.6));
+    overflow:hidden;
     opacity:0;
     transition: opacity 2s ease;
 }
 
-/* fade in */
-body.show{
-    opacity:1;
-}
+/* fade */
+body.show{ opacity:1; }
 
-/* CONTENEDOR GENERAL */
+/* CONTENEDOR */
 .main{
     display:flex;
     gap:20px;
     width:90%;
     max-width:1000px;
     z-index:2;
-    align-items:stretch; /* 🔥 igual altura */
+    align-items:stretch;
 }
+
 /* TARJETAS */
 .card{
     flex:1;
-    height:420px; /* 🔥 mismo tamaño fijo */
+    height:420px;
     display:flex;
     flex-direction:column;
     justify-content:space-between;
-    
     background: rgba(255,255,0,0.2);
     backdrop-filter: blur(10px);
     padding:20px;
@@ -47,43 +46,39 @@ body.show{
     box-shadow:0 0 20px rgba(0,0,0,0.2);
     animation: aparecer 1.5s ease;
 }
-/* ANIMACIÓN */
+
 @keyframes aparecer{
-    from{
-        opacity:0;
-        transform: translateY(30px);
-    }
-    to{
-        opacity:1;
-        transform: translateY(0);
-    }
+    from{opacity:0; transform:translateY(30px);}
+    to{opacity:1; transform:translateY(0);}
 }
 
-/* POEMA */
+/* POEMA (escritura) */
 .poema{
     color:white;
-    font-size:18px;
+    font-size:16px;
     line-height:1.7;
-    text-align:center; /* 🔥 centrado */
+    text-align:center;
+    white-space: pre-line;
+    overflow:hidden;
+    border-right:2px solid white;
 
-    text-shadow: 
+    text-shadow:
         0 0 5px black,
-        0 0 5px black,
-        0 0 1px rgba(0,0,0,0.8); /* 🔥 iluminación negra */
+        0 0 10px black,
+        0 0 15px rgba(0,0,0,0.8);
 }
 
-/* IMAGEN FINAL */
+/* IMAGEN */
 .final-img{
     width:100%;
-    max-height:180px; /* controla tamaño sin deformar */
-    object-fit: contain; /* 🔥 muestra toda la imagen */
-    margin-top:10px;
+    max-height:180px;
+    object-fit:contain;
     border-radius:15px;
-
-    box-shadow: 0 0 15px rgba(255,255,255,0.8),
-                0 0 30px rgba(255,215,0,0.6);
+    box-shadow:0 0 15px rgba(255,255,255,0.8),
+               0 0 30px rgba(255,215,0,0.6);
 }
-/* ===== CARRUSEL ===== */
+
+/* CARRUSEL */
 .carrusel{
     position:relative;
     width:100%;
@@ -93,65 +88,39 @@ body.show{
     justify-content:center;
 }
 
-
-.hoja{
-    position:absolute;
-    font-size:60px;
-    animation: flotar 10s linear infinite, girar 8s linear infinite;
-    opacity:0.7;
-}
-
 .carrusel img{
     width:100%;
     height:250px;
-    object-fit: cover;
+    object-fit:cover;
     border-radius:15px;
-    transition: all 0.5s ease;
-
-    box-shadow: 0 0 15px rgba(255,255,255,0.8),
-                0 0 30px rgba(255,215,0,0.6);
+    transition:0.5s;
+    box-shadow:0 0 15px rgba(255,255,255,0.8),
+               0 0 30px rgba(255,215,0,0.6);
 }
 
-/* efecto al pasar el mouse */
-.carrusel img:hover{
-    transform: scale(1.03);
-    box-shadow: 0 0 25px rgba(255,255,255,1),
-                0 0 40px rgba(255,215,0,0.9);
-}
 /* BOTONES */
 .btn{
     position:absolute;
-    background: rgba(0,0,0,0.4);
+    background:rgba(0,0,0,0.4);
     color:white;
     border:none;
     font-size:25px;
     padding:10px;
-    cursor:pointer;
     border-radius:50%;
-    transition:0.3s;
+    cursor:pointer;
 }
+.prev{left:10px;}
+.next{right:10px;}
 
-.btn:hover{
-    background: rgba(0,0,0,0.7);
-}
-
-.prev{
-    left:10px;
-}
-
-.next{
-    right:10px;
-}
+/* TITULO */
 .titulo{
     text-align:center;
     color:white;
-    margin-bottom:10px;
     font-size:22px;
-
-    text-shadow: 
-        0 0 10px rgba(0, 0, 0, 0.9),
-        0 0 20px rgba(255,215,0,0.8);
+    margin-bottom:10px;
+    text-shadow:0 0 10px black, 0 0 20px gold;
 }
+
 /* GIRASOLES */
 .girasol{
     position:absolute;
@@ -159,30 +128,50 @@ body.show{
     animation: flotar 8s linear infinite, girar 6s linear infinite;
 }
 
+.hoja{
+    position:absolute;
+    font-size:60px;
+    animation: flotar 10s linear infinite, girar 8s linear infinite;
+}
+
 @keyframes flotar{
-    0%{
-        transform: translateY(100vh);
-        opacity:0;
-    }
-    50%{
-        opacity:1;
-    }
-    100%{
-        transform: translateY(-10vh);
-        opacity:0;
-    }
+    0%{transform:translateY(100vh); opacity:0;}
+    50%{opacity:1;}
+    100%{transform:translateY(-10vh); opacity:0;}
 }
 
 @keyframes girar{
-    from{ rotate:0deg; }
-    to{ rotate:360deg; }
+    from{rotate:0deg;}
+    to{rotate:360deg;}
 }
 
-.g1{ left:5%; animation-delay:0s;}
-.g2{ left:20%; animation-delay:2s;}
-.g3{ left:80%; animation-delay:3s;}
-.g4{ left:60%; animation-delay:1s;}
+.g1{left:5%;}
+.g2{left:20%;}
+.g3{left:80%;}
+.g4{left:60%;}
 
+/* PARTICULAS */
+.particula{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:gold;
+    border-radius:50%;
+    box-shadow:0 0 10px gold, 0 0 20px yellow;
+    animation: subir 4s linear infinite;
+}
+
+@keyframes subir{
+    0%{transform:translateY(100vh); opacity:0;}
+    50%{opacity:1;}
+    100%{transform:translateY(-10vh); opacity:0;}
+}
+
+/* RESPONSIVE */
+@media (max-width:768px){
+    .main{flex-direction:column;}
+    .card{height:auto;}
+}
 </style>
 </head>
 
@@ -194,42 +183,27 @@ body.show{
 <div class="girasol g3">🌻</div>
 <div class="girasol g4">🌻</div>
 
-<div class="hoja" style="left:15%; animation-delay:1s;">🍃</div>
-<div class="hoja" style="left:75%; animation-delay:3s;">🍃</div>
-<div class="hoja" style="left:40%; animation-delay:5s;">🍃</div>
+<!-- HOJAS -->
+<div class="hoja" style="left:15%">🍃</div>
+<div class="hoja" style="left:75%">🍃</div>
 
 <div class="main">
 
-    <!-- IZQUIERDA: POEMA -->
-    <div class="card">
-        <div class="poema">
-            En el jardín de la vida, eres la flor más bella,<br>
-            con tu luz y aroma, eres mi eterna estrella.<br>
-            Tu presencia es calma, es brillo y es razón,<br>
-            un suspiro suave que habita en mi corazón.<br>
+<!-- POEMA -->
+<div class="card">
+    <div class="poema" id="poema"></div>
+    <img src="foto0.jpg" class="final-img">
+</div>
 
-            Que tu sonrisa ilumine mi vida cada instante,<br>
-            y que tu esencia sea el aire que respiro constante.<br>
-            Porque en cada latido, sin decirlo siquiera,<br>
-            te llevo conmigo de una forma sincera.
-        </div>
-        <!-- FOTO FINAL -->
-        <img src="foto0.jpg" class="final-img">
-    </div>
-
-    <!-- DERECHA: CARRUSEL -->
-    <div class="card">
-
+<!-- CARRUSEL -->
+<div class="card">
     <h2 class="titulo">Te amo 💛</h2>
-
     <div class="carrusel">
-            <button class="btn prev" onclick="cambiar(-1)">❮</button>
-
-            <img id="imagenActual" src="foto1.jpg">
-
-            <button class="btn next" onclick="cambiar(1)">❯</button>
-        </div>
+        <button class="btn prev" onclick="cambiar(-1)">❮</button>
+        <img id="imagenActual" src="foto1.jpg">
+        <button class="btn next" onclick="cambiar(1)">❯</button>
     </div>
+</div>
 
 </div>
 
@@ -239,51 +213,80 @@ body.show{
 </audio>
 
 <script>
-// FADE IN
+// fade + musica
 window.onload = ()=>{
     document.body.classList.add("show");
 
     const audio = document.getElementById("musica");
     audio.volume = 0;
 
-    function iniciarMusica(){
-        audio.play();
+    let musicaIniciada = false;
 
-        let vol = 0;
-        const subir = setInterval(()=>{
-            if(vol < 1){
-                vol += 0.02;
-                audio.volume = vol;
-            }else{
-                clearInterval(subir);
-            }
-        },200);
+document.addEventListener("click", ()=>{
+    if(musicaIniciada) return; // 🔥 evita reinicios
 
-        document.removeEventListener("click", iniciarMusica);
-    }
+    musicaIniciada = true;
 
-    document.addEventListener("click", iniciarMusica);
+    audio.play();
+
+    let v = 0;
+    const subir = setInterval(()=>{
+        if(v < 1){
+            v += 0.02;
+            audio.volume = v;
+        }else{
+            clearInterval(subir);
+        }
+    },200);
+});
 }
 
-// CARRUSEL
-let imagenes = ["foto1.jpg", "foto2.jpg", "foto3.jpg", "foto4.jpg"];
-let index = 0;
+// carrusel
+let imgs=["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg"];
+let i=0;
+function cambiar(d){
+    i+=d;
+    if(i<0)i=imgs.length-1;
+    if(i>=imgs.length)i=0;
 
-function cambiar(direccion){
-    index += direccion;
-
-    if(index < 0) index = imagenes.length - 1;
-    if(index >= imagenes.length) index = 0;
-
-    const img = document.getElementById("imagenActual");
-
-    img.style.opacity = 0;
-
+    let img=document.getElementById("imagenActual");
+    img.style.opacity=0;
     setTimeout(()=>{
-        img.src = imagenes[index];
-        img.style.opacity = 1;
+        img.src=imgs[i];
+        img.style.opacity=1;
     },300);
 }
+
+// texto animado
+const texto=`En el jardín de la vida, eres la flor más bella,
+con tu luz y aroma, eres mi eterna estrella.
+Tu presencia es calma, es brillo y es razón,
+un suspiro suave que habita en mi corazón.
+
+Que tu sonrisa ilumine mi vida cada instante,
+y que tu esencia sea el aire que respiro constante.
+
+Porque en cada latido, sin decirlo siquiera,
+te llevo conmigo de una forma sincera.`;
+
+let t=0;
+function escribir(){
+    if(t<texto.length){
+        document.getElementById("poema").innerHTML+=texto[t];
+        t++;
+        setTimeout(escribir,40);
+    }
+}
+window.addEventListener("load", escribir);
+
+// particulas
+setInterval(()=>{
+    const p=document.createElement("div");
+    p.className="particula";
+    p.style.left=Math.random()*100+"vw";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),4000);
+},300);
 </script>
 
 </body>
