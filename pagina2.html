@@ -18,8 +18,6 @@ body{
     opacity:0;
     transition: opacity 2s ease;
 }
-
-/* fade */
 body.show{ opacity:1; }
 
 /* CONTENEDOR */
@@ -28,8 +26,6 @@ body.show{ opacity:1; }
     gap:20px;
     width:90%;
     max-width:1000px;
-    z-index:2;
-    align-items:stretch;
 }
 
 /* TARJETAS */
@@ -44,28 +40,16 @@ body.show{ opacity:1; }
     padding:20px;
     border-radius:20px;
     box-shadow:0 0 20px rgba(0,0,0,0.2);
-    animation: aparecer 1.5s ease;
 }
 
-@keyframes aparecer{
-    from{opacity:0; transform:translateY(30px);}
-    to{opacity:1; transform:translateY(0);}
-}
-
-/* POEMA (escritura) */
+/* POEMA */
 .poema{
     color:white;
     font-size:16px;
-    line-height:1.7;
     text-align:center;
-    white-space: pre-line;
-    overflow:hidden;
+    white-space:pre-line;
     border-right:2px solid white;
-
-    text-shadow:
-        0 0 5px black,
-        0 0 10px black,
-        0 0 15px rgba(0,0,0,0.8);
+    text-shadow:0 0 5px black,0 0 10px black;
 }
 
 /* IMAGEN */
@@ -74,8 +58,6 @@ body.show{ opacity:1; }
     max-height:180px;
     object-fit:contain;
     border-radius:15px;
-    box-shadow:0 0 15px rgba(255,255,255,0.8),
-               0 0 30px rgba(255,215,0,0.6);
 }
 
 /* CARRUSEL */
@@ -86,16 +68,15 @@ body.show{ opacity:1; }
     display:flex;
     align-items:center;
     justify-content:center;
+    overflow:hidden;
 }
 
 .carrusel img{
     width:100%;
-    height:250px;
+    height:100%;
     object-fit:cover;
     border-radius:15px;
     transition:0.5s;
-    box-shadow:0 0 15px rgba(255,255,255,0.8),
-               0 0 30px rgba(255,215,0,0.6);
 }
 
 /* BOTONES */
@@ -107,48 +88,32 @@ body.show{ opacity:1; }
     font-size:25px;
     padding:10px;
     border-radius:50%;
-    cursor:pointer;
 }
 .prev{left:10px;}
 .next{right:10px;}
+
+/* INDICADORES */
+.indicadores{
+    position:absolute;
+    bottom:10px;
+    display:flex;
+    gap:5px;
+}
+
+.punto{
+    width:10px;
+    height:10px;
+    background:white;
+    border-radius:50%;
+    opacity:0.5;
+}
+.punto.activo{ opacity:1; }
 
 /* TITULO */
 .titulo{
     text-align:center;
     color:white;
-    font-size:22px;
-    margin-bottom:10px;
-    text-shadow:0 0 10px black, 0 0 20px gold;
 }
-
-/* GIRASOLES */
-.girasol{
-    position:absolute;
-    font-size:100px;
-    animation: flotar 8s linear infinite, girar 6s linear infinite;
-}
-
-.hoja{
-    position:absolute;
-    font-size:60px;
-    animation: flotar 10s linear infinite, girar 8s linear infinite;
-}
-
-@keyframes flotar{
-    0%{transform:translateY(100vh); opacity:0;}
-    50%{opacity:1;}
-    100%{transform:translateY(-10vh); opacity:0;}
-}
-
-@keyframes girar{
-    from{rotate:0deg;}
-    to{rotate:360deg;}
-}
-
-.g1{left:5%;}
-.g2{left:20%;}
-.g3{left:80%;}
-.g4{left:60%;}
 
 /* PARTICULAS */
 .particula{
@@ -157,107 +122,136 @@ body.show{ opacity:1; }
     height:6px;
     background:gold;
     border-radius:50%;
-    box-shadow:0 0 10px gold, 0 0 20px yellow;
     animation: subir 4s linear infinite;
 }
-
 @keyframes subir{
     0%{transform:translateY(100vh); opacity:0;}
     50%{opacity:1;}
     100%{transform:translateY(-10vh); opacity:0;}
 }
 
-/* RESPONSIVE */
+/* MODO APP */
 @media (max-width:768px){
-    .main{flex-direction:column;}
-    .card{height:auto;}
+
+    body{ align-items:flex-start; }
+
+    .main{
+        flex-direction:column;
+        height:100vh;
+        justify-content:space-between;
+    }
+
+    .card:first-child{
+        height:60%;
+        overflow-y:auto;
+    }
+
+    .card:last-child{
+        position:fixed;
+        bottom:0;
+        left:0;
+        width:100%;
+        height:40%;
+        border-radius:20px 20px 0 0;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- GIRASOLES -->
-<div class="girasol g1">🌻</div>
-<div class="girasol g2">🌻</div>
-<div class="girasol g3">🌻</div>
-<div class="girasol g4">🌻</div>
-
-<!-- HOJAS -->
-<div class="hoja" style="left:15%">🍃</div>
-<div class="hoja" style="left:75%">🍃</div>
-
 <div class="main">
 
 <!-- POEMA -->
 <div class="card">
-    <div class="poema" id="poema"></div>
+    <div id="poema" class="poema"></div>
     <img src="foto0.jpg" class="final-img">
 </div>
 
 <!-- CARRUSEL -->
 <div class="card">
     <h2 class="titulo">Te amo 💛</h2>
-    <div class="carrusel">
+
+    <div class="carrusel" id="carrusel">
         <button class="btn prev" onclick="cambiar(-1)">❮</button>
         <img id="imagenActual" src="foto1.jpg">
         <button class="btn next" onclick="cambiar(1)">❯</button>
+
+        <div class="indicadores" id="indicadores"></div>
     </div>
 </div>
 
 </div>
 
-<!-- MUSICA -->
 <audio id="musica" loop>
     <source src="musica.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// fade + musica
-window.onload = ()=>{
-    document.body.classList.add("show");
-
-    const audio = document.getElementById("musica");
-    audio.volume = 0;
-
-    let musicaIniciada = false;
-
-document.addEventListener("click", ()=>{
-    if(musicaIniciada) return; // 🔥 evita reinicios
-
-    musicaIniciada = true;
-
-    audio.play();
-
-    let v = 0;
-    const subir = setInterval(()=>{
-        if(v < 1){
-            v += 0.02;
-            audio.volume = v;
-        }else{
-            clearInterval(subir);
-        }
+// MUSICA
+let started=false;
+document.addEventListener("click",()=>{
+    if(started) return;
+    started=true;
+    const a=document.getElementById("musica");
+    a.volume=0;
+    a.play();
+    let v=0;
+    const i=setInterval(()=>{
+        if(v<1){v+=0.02;a.volume=v;}
+        else clearInterval(i);
     },200);
 });
-}
 
-// carrusel
+// CARRUSEL
 let imgs=["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg"];
 let i=0;
-function cambiar(d){
-    i+=d;
-    if(i<0)i=imgs.length-1;
-    if(i>=imgs.length)i=0;
+const img=document.getElementById("imagenActual");
 
-    let img=document.getElementById("imagenActual");
+function cambiar(d){
+    i=(i+d+imgs.length)%imgs.length;
+    actualizar();
+}
+
+function actualizar(){
     img.style.opacity=0;
     setTimeout(()=>{
         img.src=imgs[i];
         img.style.opacity=1;
+        actualizarPuntos();
     },300);
 }
 
-// texto animado
+// AUTO PLAY
+setInterval(()=> cambiar(1),4000);
+
+// INDICADORES
+const cont=document.getElementById("indicadores");
+imgs.forEach((_,idx)=>{
+    let p=document.createElement("div");
+    p.className="punto";
+    cont.appendChild(p);
+});
+
+function actualizarPuntos(){
+    document.querySelectorAll(".punto").forEach((p,idx)=>{
+        p.classList.toggle("activo", idx===i);
+    });
+}
+actualizarPuntos();
+
+// SWIPE
+let startX=0;
+document.getElementById("carrusel").addEventListener("touchstart",e=>{
+    startX=e.touches[0].clientX;
+});
+document.getElementById("carrusel").addEventListener("touchend",e=>{
+    let endX=e.changedTouches[0].clientX;
+    if(startX-endX>50) cambiar(1);
+    if(endX-startX>50) cambiar(-1);
+});
+
+// TEXTO
 const texto=`En el jardín de la vida, eres la flor más bella,
 con tu luz y aroma, eres mi eterna estrella.
 Tu presencia es calma, es brillo y es razón,
@@ -277,16 +271,19 @@ function escribir(){
         setTimeout(escribir,40);
     }
 }
-window.addEventListener("load", escribir);
+escribir();
 
-// particulas
+// PARTICULAS
 setInterval(()=>{
-    const p=document.createElement("div");
+    let p=document.createElement("div");
     p.className="particula";
     p.style.left=Math.random()*100+"vw";
     document.body.appendChild(p);
     setTimeout(()=>p.remove(),4000);
 },300);
+
+// FADE
+window.onload=()=>document.body.classList.add("show");
 </script>
 
 </body>
