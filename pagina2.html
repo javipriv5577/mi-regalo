@@ -11,7 +11,7 @@ body{
     min-height:100vh;
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, rgba(255, 235, 59, 0.6), rgba(255, 213, 79, 0.6));
-    overflow-x:hidden; /* 🔥 solo bloquea horizontal */
+    overflow-x:hidden;
     opacity:0;
     transition: opacity 2s ease;
 }
@@ -84,26 +84,10 @@ body.show{ opacity:1; }
     font-size:25px;
     padding:10px;
     border-radius:50%;
+    cursor:pointer;
 }
 .prev{left:10px;}
 .next{right:10px;}
-
-/* INDICADORES */
-.indicadores{
-    position:absolute;
-    bottom:10px;
-    display:flex;
-    gap:5px;
-}
-
-.punto{
-    width:10px;
-    height:10px;
-    background:white;
-    border-radius:50%;
-    opacity:0.5;
-}
-.punto.activo{ opacity:1; }
 
 /* TITULO */
 .titulo{
@@ -112,21 +96,27 @@ body.show{ opacity:1; }
     margin-bottom:10px;
 }
 
-/* PARTICULAS (sin afectar scroll) */
+/* 🌟 PARTICULAS VISIBLES */
 .particula{
-    position:fixed; /* 🔥 clave para evitar saltos */
-    width:6px;
-    height:6px;
-    background:gold;
+    position:fixed;
+    width:8px;
+    height:8px;
+    background: radial-gradient(circle, #fff, gold);
     border-radius:50%;
-    animation: subir 4s linear infinite;
     pointer-events:none;
+    animation: flotar 6s linear infinite;
 }
 
-@keyframes subir{
-    0%{transform:translateY(100vh); opacity:0;}
-    50%{opacity:1;}
-    100%{transform:translateY(-10vh); opacity:0;}
+@keyframes flotar{
+    0%{
+        transform: translateY(100vh) scale(0.5);
+        opacity:0;
+    }
+    30%{ opacity:1; }
+    100%{
+        transform: translateY(-10vh) scale(1.2);
+        opacity:0;
+    }
 }
 
 /* 📱 RESPONSIVE */
@@ -160,8 +150,6 @@ body.show{ opacity:1; }
         <button class="btn prev" onclick="cambiar(-1)">❮</button>
         <img id="imagenActual" src="foto1.jpg">
         <button class="btn next" onclick="cambiar(1)">❯</button>
-
-        <div class="indicadores" id="indicadores"></div>
     </div>
 </div>
 
@@ -172,59 +160,44 @@ body.show{ opacity:1; }
 </audio>
 
 <script>
-// MUSICA
+// 🎵 MUSICA SIN CORTES
 let started=false;
 document.addEventListener("click",()=>{
     if(started) return;
     started=true;
+
     const a=document.getElementById("musica");
     a.volume=0;
     a.play();
+
     let v=0;
-    const i=setInterval(()=>{
-        if(v<1){v+=0.02;a.volume=v;}
-        else clearInterval(i);
+    const subir=setInterval(()=>{
+        if(v<1){
+            v+=0.02;
+            a.volume=v;
+        }else{
+            clearInterval(subir);
+        }
     },200);
 });
 
-// CARRUSEL
+// 📸 CARRUSEL MANUAL
 let imgs=["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg"];
 let i=0;
-const img=document.getElementById("imagenActual");
 
 function cambiar(d){
     i=(i+d+imgs.length)%imgs.length;
-    actualizar();
-}
 
-function actualizar(){
+    const img=document.getElementById("imagenActual");
     img.style.opacity=0;
+
     setTimeout(()=>{
         img.src=imgs[i];
         img.style.opacity=1;
-        actualizarPuntos();
     },300);
 }
 
-// AUTO PLAY
-setInterval(()=> cambiar(1),4000);
-
-// INDICADORES
-const cont=document.getElementById("indicadores");
-imgs.forEach(()=>{
-    let p=document.createElement("div");
-    p.className="punto";
-    cont.appendChild(p);
-});
-
-function actualizarPuntos(){
-    document.querySelectorAll(".punto").forEach((p,idx)=>{
-        p.classList.toggle("activo", idx===i);
-    });
-}
-actualizarPuntos();
-
-// SWIPE
+// 👉 SWIPE
 let startX=0;
 document.getElementById("carrusel").addEventListener("touchstart",e=>{
     startX=e.touches[0].clientX;
@@ -235,7 +208,7 @@ document.getElementById("carrusel").addEventListener("touchend",e=>{
     if(endX-startX>50) cambiar(-1);
 });
 
-// TEXTO
+// ✨ TEXTO ANIMADO
 const texto=`En el jardín de la vida, eres la flor más bella,
 con tu luz y aroma, eres mi eterna estrella.
 Tu presencia es calma, es brillo y es razón,
@@ -257,14 +230,15 @@ function escribir(){
 }
 escribir();
 
-// PARTICULAS
+// 💛 PARTICULAS VISIBLES
 setInterval(()=>{
     let p=document.createElement("div");
     p.className="particula";
     p.style.left=Math.random()*100+"vw";
     document.body.appendChild(p);
-    setTimeout(()=>p.remove(),4000);
-},300);
+
+    setTimeout(()=>p.remove(),6000);
+},200);
 
 // FADE
 window.onload=()=>document.body.classList.add("show");
