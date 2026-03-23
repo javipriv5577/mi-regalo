@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para ti</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ecf8ff, #00BFFF);
+    transition: opacity 1s ease;
+}
+
+/* transición salida */
+.fade-out{
+    opacity:0;
+}
+
+/* contenedor */
+.card{
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    color:white;
+    box-shadow: 0 0 30px rgba(0,0,0,0.2);
+    animation: aparecer 1.5s ease;
+}
+
+/* animación entrada */
+@keyframes aparecer{
+    from{
+        opacity:0;
+        transform: translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform: translateY(0);
+    }
+}
+
+/* mensaje */
+h1{
+    margin-bottom:10px;
+    font-size:26px;
+    color: white;
+
+    text-shadow: 
+        -1px -1px 0 #272727,
+         1px -1px 0 #292929,
+        -1px  1px 0 #191919,
+         1px  1px 0 #333333;
+}
+
+/* botón */
+button{
+    position:relative;
+    overflow:hidden;
+    padding:15px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:30px;
+    background:#ffffff;
+    color:#00BFFF;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+/* animación botón */
+button:hover{
+    transform: scale(1.1);
+    background:#e0f7ff;
+}
+
+/* brillo animado (arreglado) */
+button::after{
+    content:'';
+    position:absolute;
+    width:0;
+    height:100%;
+    left:0;
+    top:0;
+    background:rgba(255,255,255,0.4);
+    transition:0.4s;
+}
+
+button:hover::after{
+    width:100%;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+    <h1>UN REGALO PARA TI</h1>
+    <h1>MI AMOR 🌻</h1>
+    <button onclick="abrir()">Abrir</button>
+</div>
+
+<script>
+function abrir(){
+    document.body.classList.add("fade-out"); // transición
+    setTimeout(()=>{
+        window.location.href = "pagina2.html";
+    },1000);
+}
+</script>
+
+</body>
+</html>
