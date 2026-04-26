@@ -14,12 +14,14 @@ body{
     align-items:center;
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, rgba(255, 235, 59, 0.6), rgba(255, 213, 79, 0.6));
-    overflow:hidden;
+    overflow-y:auto;
+    overflow-x:hidden;
+    -webkit-overflow-scrolling: touch;
     opacity:0;
     transition: opacity 2s ease;
 }
 
-/* fade */
+
 body.show{ opacity:1; }
 
 /* CONTENEDOR */
@@ -35,7 +37,7 @@ body.show{ opacity:1; }
 /* TARJETAS */
 .card{
     flex:1;
-    height:420px;
+    height:auto; /* 👈 ahora adaptable */
     display:flex;
     flex-direction:column;
     justify-content:space-between;
@@ -52,7 +54,7 @@ body.show{ opacity:1; }
     to{opacity:1; transform:translateY(0);}
 }
 
-/* POEMA (escritura) */
+/* POEMA */
 .poema{
     color:white;
     font-size:16px;
@@ -61,18 +63,17 @@ body.show{ opacity:1; }
     white-space: pre-line;
     overflow:hidden;
     border-right:2px solid white;
-
     text-shadow:
         0 0 5px black,
         0 0 10px black,
         0 0 15px rgba(0,0,0,0.8);
 }
 
-/* IMAGEN */
+/* IMAGEN PRINCIPAL */
 .final-img{
     width:100%;
-    max-height:180px;
-    object-fit:contain;
+    height:200px; /* 👈 tamaño uniforme */
+    object-fit:cover; /* 👈 sin deformar */
     border-radius:15px;
     box-shadow:0 0 15px rgba(255,255,255,0.8),
                0 0 30px rgba(255,215,0,0.6);
@@ -91,7 +92,7 @@ body.show{ opacity:1; }
 .carrusel img{
     width:100%;
     height:250px;
-    object-fit:cover;
+    object-fit:cover; /* 👈 clave */
     border-radius:15px;
     transition:0.5s;
     box-shadow:0 0 15px rgba(255,255,255,0.8),
@@ -121,23 +122,27 @@ body.show{ opacity:1; }
     text-shadow:0 0 10px black, 0 0 20px gold;
 }
 
-/* GIRASOLES */
-.girasol{
+/* ELEMENTOS FLOTANTES */
+.girasol, .hoja, .particula{
     position:absolute;
+    pointer-events:none;
+    will-change: transform, opacity;
+}
+
+.girasol{
     font-size:100px;
-    animation: flotar 8s linear infinite, girar 6s linear infinite;
+    animation: flotar 12s linear infinite, girar 10s linear infinite;
 }
 
 .hoja{
-    position:absolute;
     font-size:60px;
-    animation: flotar 10s linear infinite, girar 8s linear infinite;
+    animation: flotar 14s linear infinite, girar 12s linear infinite;
 }
 
 @keyframes flotar{
-    0%{transform:translateY(100vh); opacity:0;}
+    0%{transform:translateY(100%); opacity:0;}
     50%{opacity:1;}
-    100%{transform:translateY(-10vh); opacity:0;}
+    100%{transform:translateY(-10%); opacity:0;}
 }
 
 @keyframes girar{
@@ -152,25 +157,25 @@ body.show{ opacity:1; }
 
 /* PARTICULAS */
 .particula{
-    position:absolute;
     width:6px;
     height:6px;
     background:gold;
     border-radius:50%;
     box-shadow:0 0 10px gold, 0 0 20px yellow;
-    animation: subir 4s linear infinite;
+    animation: subir 6s linear infinite;
 }
 
 @keyframes subir{
-    0%{transform:translateY(100vh); opacity:0;}
+    0%{transform:translateY(100%); opacity:0;}
     50%{opacity:1;}
-    100%{transform:translateY(-10vh); opacity:0;}
+    100%{transform:translateY(-10%); opacity:0;}
 }
 
 /* RESPONSIVE */
 @media (max-width:768px){
     .main{flex-direction:column;}
-    .card{height:auto;}
+    .final-img{ height:180px; }
+    .carrusel img{ height:200px; }
 }
 </style>
 </head>
@@ -222,27 +227,26 @@ window.onload = ()=>{
 
     let musicaIniciada = false;
 
-document.addEventListener("click", ()=>{
-    if(musicaIniciada) return; // 🔥 evita reinicios
+    document.addEventListener("click", ()=>{
+        if(musicaIniciada) return;
 
-    musicaIniciada = true;
+        musicaIniciada = true;
+        audio.play();
 
-    audio.play();
-
-    let v = 0;
-    const subir = setInterval(()=>{
-        if(v < 1){
-            v += 0.02;
-            audio.volume = v;
-        }else{
-            clearInterval(subir);
-        }
-    },200);
-});
+        let v = 0;
+        const subir = setInterval(()=>{
+            if(v < 1){
+                v += 0.02;
+                audio.volume = v;
+            }else{
+                clearInterval(subir);
+            }
+        },200);
+    });
 }
 
 // carrusel
-let imgs=["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg","foto6.jpg","foto7.jpg"];
+let imgs=["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg","foto6.jpg","foto7.jpg","foto8.jpg","foto9.jpg"];
 let i=0;
 function cambiar(d){
     i+=d;
@@ -279,14 +283,14 @@ function escribir(){
 }
 window.addEventListener("load", escribir);
 
-// particulas
+// particulas optimizadas
 setInterval(()=>{
     const p=document.createElement("div");
     p.className="particula";
     p.style.left=Math.random()*100+"vw";
     document.body.appendChild(p);
-    setTimeout(()=>p.remove(),4000);
-},300);
+    setTimeout(()=>p.remove(),6000);
+},800);
 </script>
 
 </body>
