@@ -3,21 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para ti 🌻</title>
+<title>Para ti 🩵</title>
 
 <style>
 body{
     margin:0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, rgba(255,235,59,0.6), rgba(255,213,79,0.6));
+    background: linear-gradient(135deg, #87CEEB, #bde0fe);
     overflow-x:hidden;
 }
 
-/* FONDO ANIMADO (YA NO SE DUPLICA) */
+/* FONDO */
 .fondo{
     position:fixed;
-    top:0;
-    left:0;
     width:100%;
     height:100%;
     z-index:0;
@@ -38,9 +36,9 @@ body{
 
 /* TARJETAS */
 .card{
-    background: rgba(255,255,0,0.2);
+    background: rgba(255,255,255,0.3);
     backdrop-filter: blur(10px);
-    padding:20px;
+    padding:25px;
     border-radius:20px;
     box-shadow:0 0 20px rgba(0,0,0,0.2);
 }
@@ -48,29 +46,57 @@ body{
 /* TITULO */
 .titulo{
     text-align:center;
-    color:white;
+    color:#0a2540;
+    font-weight:bold;
     margin-bottom:15px;
 }
 
-/* IMAGENES */
-.img{
-    width:100%;
-    height:250px;
+/* 🌸 FOTO DEL POEMA */
+.foto-poema{
+    display:flex;
+    justify-content:center;
+    margin-bottom:15px;
+}
+
+.foto-poema img{
+    width:160px;
+    height:160px;
     object-fit:cover;
-    border-radius:15px;
+    border-radius:50%;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+/* POEMA */
+.poema{
+    color:#0a2540;
+    text-align:center;
+    line-height:1.8;
+    white-space:pre-line;
+    font-size:17px;
 }
 
 /* CARRUSEL */
 .carrusel{
     position:relative;
+    display:flex;
+    justify-content:center;
 }
 
-.carrusel img{
-    width:100%;
-    height:250px;
+/* VERTICAL */
+.vertical{
+    width:220px;
+    height:400px;
     object-fit:cover;
     border-radius:15px;
-    transition:0.4s;
+}
+
+/* HORIZONTAL MEJORADO */
+.horizontal{
+    width:100%;
+    height:400px;
+    object-fit:cover;
+    object-position:center;
+    border-radius:15px;
 }
 
 /* BOTONES */
@@ -89,82 +115,65 @@ body{
 .prev{left:10px;}
 .next{right:10px;}
 
-/* ANIMACIONES */
-.girasol, .hoja, .particula{
+/* MARIPOSAS */
+.mariposa{
     position:absolute;
-    pointer-events:none;
+    font-size:28px;
+    animation: volar linear infinite;
 }
 
-.girasol{
-    font-size:90px;
-    animation: flotar 12s linear infinite, girar 10s linear infinite;
-}
-
-.hoja{
-    font-size:50px;
-    animation: flotar 14s linear infinite, girar 12s linear infinite;
-}
-
-@keyframes flotar{
-    0%{transform:translateY(100%); opacity:0;}
+@keyframes volar{
+    0%{transform:translateY(100vh); opacity:0;}
     50%{opacity:1;}
-    100%{transform:translateY(-10%); opacity:0;}
+    100%{transform:translateY(-10vh); opacity:0;}
 }
 
-@keyframes girar{
-    from{rotate:0deg;}
-    to{rotate:360deg;}
-}
+/* RESPONSIVE */
+@media (max-width:768px){
+    .horizontal{
+        height:300px;
+    }
 
-/* PARTICULAS */
-.particula{
-    width:6px;
-    height:6px;
-    background:gold;
-    border-radius:50%;
-    animation: subir 6s linear infinite;
-}
-
-@keyframes subir{
-    0%{transform:translateY(100%); opacity:0;}
-    50%{opacity:1;}
-    100%{transform:translateY(-10%); opacity:0;}
+    .foto-poema img{
+        width:130px;
+        height:130px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- FONDO -->
 <div class="fondo" id="fondo"></div>
 
 <div class="main">
 
 <!-- POEMA -->
 <div class="card">
-    <h2 class="titulo">💛</h2>
-    <p style="color:white;text-align:center;">
-        Tu sonrisa ilumina mi vida,<br>
-        y tu presencia me da calma.
-    </p>
+
+    <div class="foto-poema">
+        <img src="flores.jpg">
+    </div>
+
+    <div class="poema" id="poema"></div>
 </div>
 
 <!-- CARRUSEL VERTICAL -->
 <div class="card">
-    <h2 class="titulo">Tus fotos 📸</h2>
+    <h2 class="titulo">Únicos 🩵</h2>
     <div class="carrusel">
         <button class="btn prev" onclick="cambiarVertical(-1)">❮</button>
-        <img id="vertical" src="foto01.jpg">
+        <img id="vertical" class="vertical" src="foto01.jpg">
         <button class="btn next" onclick="cambiarVertical(1)">❯</button>
     </div>
 </div>
 
 <!-- CARRUSEL HORIZONTAL -->
 <div class="card">
-    <h2 class="titulo">Momentos 💫</h2>
+    <h2 class="titulo">Nosotros ✨</h2>
     <div class="carrusel">
         <button class="btn prev" onclick="cambiarHorizontal(-1)">❮</button>
-        <img id="horizontal" src="foto1.jpg">
+        <img id="horizontal" class="horizontal" src="foto1.jpg">
         <button class="btn next" onclick="cambiarHorizontal(1)">❯</button>
     </div>
 </div>
@@ -172,47 +181,55 @@ body{
 </div>
 
 <script>
-/* ARRAYS */
-let verticalImgs = ["foto01.jpg","foto02.jpg","foto03.jpg","foto04.jpg","foto05.jpg"];
-let horizontalImgs = ["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg"];
+// POEMA
+const texto=`En el jardín de la vida, eres la más bella,
+tu luz me guía como una estrella.
+Tu sonrisa ilumina cada momento,
+y tu presencia me da calma y aliento.
 
-let v=0;
-let h=0;
+Eres paz, eres brillo, eres razón,
+y en cada latido estás en mi corazón. TE AMO 🩵`;
 
-/* FUNCIONES */
+let i=0;
+function escribir(){
+    if(i<texto.length){
+        document.getElementById("poema").innerHTML+=texto[i];
+        i++;
+        setTimeout(escribir,35);
+    }
+}
+escribir();
+
+// CARRUSELES
+let verticalImgs=["foto01.jpg","foto02.jpg","foto03.jpg","foto04.jpg","foto05.jpg"];
+let horizontalImgs=["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg"];
+
+let v=0,h=0;
+
 function cambiarVertical(d){
-    v+=d;
-    if(v<0)v=verticalImgs.length-1;
-    if(v>=verticalImgs.length)v=0;
+    v=(v+d+verticalImgs.length)%verticalImgs.length;
     document.getElementById("vertical").src=verticalImgs[v];
 }
 
 function cambiarHorizontal(d){
-    h+=d;
-    if(h<0)h=horizontalImgs.length-1;
-    if(h>=horizontalImgs.length)h=0;
+    h=(h+d+horizontalImgs.length)%horizontalImgs.length;
     document.getElementById("horizontal").src=horizontalImgs[h];
 }
 
-/* FONDO DINAMICO (sin duplicarse) */
-const fondo = document.getElementById("fondo");
+// MARIPOSAS
+const fondo=document.getElementById("fondo");
+const colores=["#ff4d6d","#ffbe0b","#3a86ff","#8338ec","#06d6a0"];
 
 setInterval(()=>{
-    const e=document.createElement("div");
-    e.className="girasol";
-    e.style.left=Math.random()*100+"%";
-    e.innerHTML="🌻";
-    fondo.appendChild(e);
-    setTimeout(()=>e.remove(),12000);
-},2000);
-
-setInterval(()=>{
-    const p=document.createElement("div");
-    p.className="particula";
-    p.style.left=Math.random()*100+"%";
-    fondo.appendChild(p);
-    setTimeout(()=>p.remove(),6000);
-},800);
+    const m=document.createElement("div");
+    m.className="mariposa";
+    m.style.left=Math.random()*100+"%";
+    m.style.color=colores[Math.floor(Math.random()*colores.length)];
+    m.style.animationDuration=(8 + Math.random()*6)+"s";
+    m.innerHTML="🦋";
+    fondo.appendChild(m);
+    setTimeout(()=>m.remove(),12000);
+},500);
 </script>
 
 </body>
